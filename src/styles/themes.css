@@ -1,10 +1,13 @@
 
 [data-theme="dark"] {
   --background: #0B1220;
-  --surface: #101B32;
-
-  --text-primary: #FFFFFF;
+  --surface: #111C2E;
+  --surface-muted: #16243A;
+  --text-primary: #F4F7FC;
   --text-secondary: #A9B8CD;
-
-  --border: #263650;
+  --border: #293A53;
+  --border-strong: #3A4F6D;
+  --focus-ring: rgba(24, 199, 223, 0.4);
+  --shadow-card: 0 10px 32px rgba(0, 0, 0, 0.2);
+  color-scheme: dark;
 }

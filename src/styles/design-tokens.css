@@ -1,23 +1,25 @@
 
 :root {
-  /* NPX TECHNOLOGY Brand Colours */
   --npx-navy: #102A56;
   --npx-blue: #1769C2;
   --npx-cyan: #18C7DF;
   --npx-purple: #8B5CF6;
 
-  /* Background Colours */
   --background: #F5F8FC;
   --surface: #FFFFFF;
-
-  /* Text Colours */
+  --surface-muted: #EDF3FA;
   --text-primary: #17243A;
   --text-secondary: #718096;
-
-  /* Border */
   --border: #E3EAF3;
-
-  /* Design Settings */
-  --radius-card: 16px;
-  --shadow-card: 0 4px 20px rgba(16, 42, 86, 0.06);
+  --border-strong: #CBD7E6;
+  --focus-ring: rgba(23, 105, 194, 0.34);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --shadow-card: 0 10px 32px rgba(16, 42, 86, 0.07);
+  --shadow-float: 0 20px 50px rgba(8, 24, 50, 0.2);
+  --content-width: 1160px;
+  --page-gutter: clamp(20px, 5vw, 72px);
+  color-scheme: light;
 }
