@@ -1,0 +1,23 @@
+
+:root {
+  /* NPX TECHNOLOGY Brand Colours */
+  --npx-navy: #102A56;
+  --npx-blue: #1769C2;
+  --npx-cyan: #18C7DF;
+  --npx-purple: #8B5CF6;
+
+  /* Background Colours */
+  --background: #F5F8FC;
+  --surface: #FFFFFF;
+
+  /* Text Colours */
+  --text-primary: #17243A;
+  --text-secondary: #718096;
+
+  /* Border */
+  --border: #E3EAF3;
+
+  /* Design Settings */
+  --radius-card: 16px;
+  --shadow-card: 0 4px 20px rgba(16, 42, 86, 0.06);
+}

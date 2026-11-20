@@ -1,0 +1,10 @@
+
+[data-theme="dark"] {
+  --background: #0B1220;
+  --surface: #101B32;
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #A9B8CD;
+
+  --border: #263650;
+}
