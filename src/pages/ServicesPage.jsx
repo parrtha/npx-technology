@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import { ArrowRight, Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Card from '../components/Card.jsx'
@@ -6,6 +6,8 @@ import SectionHeading from '../components/SectionHeading.jsx'
 import { engagementOptions, services } from '../data/services.js'
 
 function ServicesPage() {
+  const reduceMotion = useReducedMotion()
+
   return (
     <>
       <section className="inner-hero">
@@ -31,10 +33,10 @@ function ServicesPage() {
             {services.map((service, index) => (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.35, delay: (index % 2) * 0.06 }}
+                transition={{ duration: reduceMotion ? 0 : 0.2, delay: reduceMotion ? 0 : (index % 2) * 0.05 }}
               >
                 <Card className="service-detail-card">
                   <span className="service-detail-card__number">{String(index + 1).padStart(2, '0')}</span>

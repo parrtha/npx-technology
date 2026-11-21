@@ -1,5 +1,7 @@
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, Mail } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { contactEmailUrl, whatsappUrl } from '../utils/contactLinks.js'
+import WhatsAppIcon from './WhatsAppIcon.jsx'
 
 function Footer() {
   return (
@@ -18,6 +20,20 @@ function Footer() {
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>
         </div>
+        {(whatsappUrl || contactEmailUrl) && (
+          <div className="site-footer__contact" role="group" aria-label="Contact NPX">
+            {whatsappUrl && (
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                <WhatsAppIcon size={17} /> Chat on WhatsApp
+              </a>
+            )}
+            {contactEmailUrl && (
+              <a href={contactEmailUrl}>
+                <Mail size={17} aria-hidden="true" /> Email us
+              </a>
+            )}
+          </div>
+        )}
         <Link className="footer-portal-link" to="/dashboard">
           Client portal <ArrowUpRight size={15} aria-hidden="true" />
         </Link>

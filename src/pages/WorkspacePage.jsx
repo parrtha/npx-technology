@@ -1,11 +1,19 @@
 import { ArrowUpRight, CircleDashed } from 'lucide-react'
+import { motion, useReducedMotion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import Card from '../components/Card.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 
 function WorkspacePage({ eyebrow, title, description, actionTo, actionLabel, note }) {
+  const reduceMotion = useReducedMotion()
+
   return (
-    <div className="workspace-page">
+    <motion.div
+      className="workspace-page"
+      initial={{ opacity: 0, y: reduceMotion ? 0 : 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: reduceMotion ? 0 : 0.2 }}
+    >
       <SectionHeading
         eyebrow={eyebrow}
         title={title}
@@ -23,7 +31,7 @@ function WorkspacePage({ eyebrow, title, description, actionTo, actionLabel, not
         )}
       </Card>
       <p className="workspace-disclaimer">No account data or project activity is connected in this preview.</p>
-    </div>
+    </motion.div>
   )
 }
 

@@ -1,12 +1,10 @@
 import { useSearchParams } from 'react-router-dom'
-import { ArrowUpRight, Mail, MessageCircle, ShieldCheck } from 'lucide-react'
+import { Mail, ShieldCheck } from 'lucide-react'
 import Card from '../components/Card.jsx'
 import ContactForm from '../components/ContactForm.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
-
-const contactEmail = import.meta.env.VITE_CONTACT_EMAIL?.trim()
-const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER ?? '').replace(/\D/g, '')
-const whatsappUrl = whatsappNumber ? `https://wa.me/${whatsappNumber}` : null
+import WhatsAppIcon from '../components/WhatsAppIcon.jsx'
+import { contactEmail, contactEmailUrl, whatsappUrl } from '../utils/contactLinks.js'
 
 function ContactPage() {
   const [searchParams] = useSearchParams()
@@ -41,29 +39,32 @@ function ContactPage() {
               <p className="eyebrow">Contact details</p>
               <h2>Get in touch with NPX.</h2>
               <p className="contact-info-card__description">
-                Verified contact channels will be listed here once configured.
+                Choose the contact method that works best for you.
               </p>
-              <div className="contact-detail">
-                <span><Mail size={18} aria-hidden="true" /></span>
-                <div>
-                  <strong>Email</strong>
-                  {contactEmail
-                    ? <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
-                    : <p>Contact email not configured</p>}
-                </div>
-              </div>
-              <div className="contact-detail">
-                <span><MessageCircle size={18} aria-hidden="true" /></span>
-                <div>
-                  <strong>WhatsApp</strong>
-                  {whatsappUrl
-                    ? (
-                      <a href={whatsappUrl} target="_blank" rel="noreferrer">
-                        Message NPX <ArrowUpRight size={13} aria-hidden="true" />
-                      </a>
-                    )
-                    : <p>WhatsApp contact not configured</p>}
-                </div>
+              <div className="contact-actions" role="group" aria-label="Contact NPX">
+                {whatsappUrl && (
+                  <a
+                    className="contact-action contact-action--whatsapp"
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <WhatsAppIcon size={19} />
+                    <span>Chat on WhatsApp</span>
+                  </a>
+                )}
+                {contactEmailUrl && (
+                  <a className="contact-action contact-action--email" href={contactEmailUrl}>
+                    <Mail size={18} aria-hidden="true" />
+                    <span>Email us</span>
+                    <small>{contactEmail}</small>
+                  </a>
+                )}
+                {!whatsappUrl && !contactEmailUrl && (
+                  <p className="contact-actions__empty">
+                    Direct contact options are not configured. Please use the enquiry form.
+                  </p>
+                )}
               </div>
             </Card>
 

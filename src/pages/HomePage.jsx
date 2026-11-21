@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -61,15 +61,17 @@ const process = [
 ]
 
 function HomePage() {
+  const reduceMotion = useReducedMotion()
+
   return (
     <>
       <section className="hero-section">
         <div className="container hero-grid">
           <motion.div
             className="hero-copy"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: reduceMotion ? 0 : 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, ease: 'easeOut' }}
+            transition={{ duration: reduceMotion ? 0 : 0.25, ease: 'easeOut' }}
           >
             <p className="eyebrow"><span className="eyebrow__dot" /> Digital studio for ambitious teams</p>
             <h1>Make your next<br />digital move <span>matter.</span></h1>
@@ -93,9 +95,9 @@ function HomePage() {
 
           <motion.div
             className="hero-visual"
-            initial={{ opacity: 0, scale: 0.97 }}
+            initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.65, delay: 0.12, ease: 'easeOut' }}
+            transition={{ duration: reduceMotion ? 0 : 0.28, delay: reduceMotion ? 0 : 0.08, ease: 'easeOut' }}
           >
             <div className="hero-visual__topline">
               <span>THE DIGITAL ADVANTAGE</span>
@@ -136,10 +138,10 @@ function HomePage() {
             {serviceHighlights.map(({ icon: Icon, service }, index) => (
               <motion.div
                 key={service.title}
-                initial={{ opacity: 0, y: 14 }}
+                initial={{ opacity: 0, y: reduceMotion ? 0 : 14 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 0.4, delay: index * 0.08 }}
+                transition={{ duration: reduceMotion ? 0 : 0.22, delay: reduceMotion ? 0 : index * 0.06 }}
               >
                 <Card className="service-card">
                   <span className="service-card__icon"><Icon size={21} aria-hidden="true" /></span>

@@ -1,14 +1,32 @@
+import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
+import Loading from '../components/Loading.jsx'
 import AdminLayout from '../layouts/AdminLayout.jsx'
 import CustomerDashboardLayout from '../layouts/CustomerDashboardLayout.jsx'
 import PublicLayout from '../layouts/PublicLayout.jsx'
 import AboutPage from '../pages/AboutPage.jsx'
 import ContactPage from '../pages/ContactPage.jsx'
+import CustomerDashboardPage from '../pages/CustomerDashboardPage.jsx'
+import CustomerProfilePage from '../pages/CustomerProfilePage.jsx'
 import HomePage from '../pages/HomePage.jsx'
+import AuthPage from '../pages/AuthPage.jsx'
 import PortfolioPage from '../pages/PortfolioPage.jsx'
 import PlaceholderPage from '../pages/PlaceholderPage.jsx'
 import ServicesPage from '../pages/ServicesPage.jsx'
 import WorkspacePage from '../pages/WorkspacePage.jsx'
+import RequireAuth from './RequireAuth.jsx'
+
+const AdminOverviewPage = lazy(() => import('../pages/AdminOverviewPage.jsx'))
+const AdminSectionPage = lazy(() => import('../pages/AdminSectionPage.jsx'))
+const AdminSettingsPage = lazy(() => import('../pages/AdminSettingsPage.jsx'))
+
+function AdminPage({ children }) {
+  return (
+    <Suspense fallback={<Loading label="Loading admin workspace" />}>
+      {children}
+    </Suspense>
+  )
+}
 
 function AppRoutes() {
   return (
@@ -19,6 +37,11 @@ function AppRoutes() {
         <Route path="work" element={<PortfolioPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="login" element={<AuthPage mode="login" />} />
+        <Route path="register" element={<AuthPage mode="register" />} />
+        <Route path="admin/login" element={<AuthPage mode="admin" />} />
+        <Route path="forgot-password" element={<AuthPage mode="forgot" />} />
+        <Route path="reset-password" element={<AuthPage mode="reset" />} />
         <Route
           path="*"
           element={(
@@ -33,74 +56,91 @@ function AppRoutes() {
         />
       </Route>
 
-      <Route path="admin" element={<AdminLayout />}>
+      <Route
+        path="admin"
+        element={(
+          <RequireAuth role="admin">
+            <AdminLayout />
+          </RequireAuth>
+        )}
+      >
         <Route
           index
           element={(
-            <WorkspacePage
-              eyebrow="Administration"
-              title="Admin overview"
-              description="A central place for the NPX team to manage the workspace."
-              actionTo="/admin/projects"
-              actionLabel="View projects"
-              note="Admin tools will be available here once workspace features are configured."
-            />
+            <AdminPage>
+              <AdminOverviewPage />
+            </AdminPage>
+          )}
+        />
+        <Route
+          path="enquiries"
+          element={(
+            <AdminPage>
+              <AdminSectionPage section="enquiries" />
+            </AdminPage>
+          )}
+        />
+        <Route
+          path="customers"
+          element={(
+            <AdminPage>
+              <AdminSectionPage section="customers" />
+            </AdminPage>
           )}
         />
         <Route
           path="projects"
           element={(
-            <WorkspacePage
-              eyebrow="Administration"
-              title="Projects"
-              description="Review and organize work across the NPX workspace."
-              actionTo="/admin"
-              actionLabel="Back to overview"
-              note="Project management is not connected yet. No project records are being shown or simulated."
-            />
+            <AdminPage>
+              <AdminSectionPage section="projects" />
+            </AdminPage>
           )}
         />
         <Route
-          path="clients"
+          path="messages"
           element={(
-            <WorkspacePage
-              eyebrow="Administration"
-              title="Clients"
-              description="Client records and workspace access will be managed here."
-              actionTo="/admin"
-              actionLabel="Back to overview"
-              note="Client management is not connected yet. No account data is being shown or simulated."
-            />
+            <AdminPage>
+              <AdminSectionPage section="messages" />
+            </AdminPage>
+          )}
+        />
+        <Route
+          path="payments"
+          element={(
+            <AdminPage>
+              <AdminSectionPage section="payments" />
+            </AdminPage>
+          )}
+        />
+        <Route
+          path="notifications"
+          element={(
+            <AdminPage>
+              <AdminSectionPage section="notifications" />
+            </AdminPage>
           )}
         />
         <Route
           path="settings"
           element={(
-            <WorkspacePage
-              eyebrow="Administration"
-              title="Settings"
-              description="Workspace preferences and administration settings."
-              actionTo="/admin"
-              actionLabel="Back to overview"
-              note="Settings will become available when the admin workspace is configured."
-            />
+            <AdminPage>
+              <AdminSettingsPage />
+            </AdminPage>
           )}
         />
       </Route>
 
-      <Route path="dashboard" element={<CustomerDashboardLayout />}>
+      <Route
+        path="dashboard"
+        element={(
+          <RequireAuth role="customer">
+            <CustomerDashboardLayout />
+          </RequireAuth>
+        )}
+      >
         <Route
           index
-          element={(
-            <WorkspacePage
-              eyebrow="Client workspace"
-              title="Welcome to your workspace"
-              description="A clear view of your projects and updates, all in one place."
-              actionTo="/dashboard/projects"
-              actionLabel="View my projects"
-              note="Your workspace is not connected yet. Project updates and account data will appear here when available."
-            />
-          )}
+          element={<CustomerDashboardPage />}
         />
         <Route
           path="projects"
@@ -111,7 +151,7 @@ function AppRoutes() {
               description="Follow progress and find the latest project information."
               actionTo="/dashboard"
               actionLabel="Back to overview"
-              note="Project information is not connected yet. No project activity is being simulated."
+              note="Project data integration is pending. No project records are displayed or simulated."
             />
           )}
         />
@@ -128,6 +168,46 @@ function AppRoutes() {
             />
           )}
         />
+        <Route
+          path="messages"
+          element={(
+            <WorkspacePage
+              eyebrow="Client workspace"
+              title="Messages"
+              description="Project conversations will be available here when messaging is connected."
+              actionTo="/dashboard"
+              actionLabel="Back to overview"
+              note="Message data integration is pending. No conversations are displayed or simulated."
+            />
+          )}
+        />
+        <Route
+          path="payments"
+          element={(
+            <WorkspacePage
+              eyebrow="Client workspace"
+              title="Payments"
+              description="Payment and invoice details will appear here when billing is connected."
+              actionTo="/dashboard"
+              actionLabel="Back to overview"
+              note="Payment data integration is pending. No transactions or amounts are displayed or simulated."
+            />
+          )}
+        />
+        <Route
+          path="notifications"
+          element={(
+            <WorkspacePage
+              eyebrow="Client workspace"
+              title="Notifications"
+              description="Important project and account updates will be collected here."
+              actionTo="/dashboard"
+              actionLabel="Back to overview"
+              note="Notification data integration is pending. No notifications are displayed or simulated."
+            />
+          )}
+        />
+        <Route path="profile" element={<CustomerProfilePage />} />
         <Route
           path="settings"
           element={(

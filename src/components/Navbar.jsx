@@ -1,9 +1,13 @@
 import { useState } from 'react'
-import { ArrowUpRight, Menu, X } from 'lucide-react'
-import { Link, NavLink } from 'react-router-dom'
+import { ArrowUpRight, Mail, LogOut, Menu, X } from 'lucide-react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { classNames } from '../utils/classNames.js'
+import { contactEmailUrl, whatsappUrl } from '../utils/contactLinks.js'
+import { getAuthErrorMessage } from '../utils/authErrorMessage.js'
+import { useAuth } from '../hooks/useAuth.js'
 import Button from './Button.jsx'
 import ThemeToggle from './ThemeToggle.jsx'
+import WhatsAppIcon from './WhatsAppIcon.jsx'
 
 const links = [
   { to: '/services', label: 'Services' },
@@ -13,9 +17,24 @@ const links = [
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [signOutError, setSignOutError] = useState('')
+  const { session, profile, signOut } = useAuth()
+  const navigate = useNavigate()
+  const portalPath = profile?.role === 'admin' ? '/admin' : '/dashboard'
 
   function closeMenu() {
     setIsMenuOpen(false)
+  }
+
+  async function handleSignOut() {
+    const { error } = await signOut()
+    if (error) {
+      setSignOutError(getAuthErrorMessage(error, 'logout'))
+      return
+    }
+    setSignOutError('')
+    closeMenu()
+    navigate('/login')
   }
 
   return (
@@ -40,6 +59,35 @@ function Navbar() {
 
         <div className="site-header__actions">
           <ThemeToggle />
+          {(whatsappUrl || contactEmailUrl) && (
+            <div className="navbar-contact-links" role="group" aria-label="Contact NPX">
+              {whatsappUrl && (
+                <a
+                  className="navbar-contact-link"
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Chat on WhatsApp"
+                  title="Chat on WhatsApp"
+                >
+                  <WhatsAppIcon />
+                </a>
+              )}
+              {contactEmailUrl && (
+                <a
+                  className="navbar-contact-link navbar-contact-link--email"
+                  href={contactEmailUrl}
+                  aria-label="Email us"
+                  title="Email us"
+                >
+                  <Mail size={18} aria-hidden="true" />
+                </a>
+              )}
+            </div>
+          )}
+          {session
+            ? <NavLink className="header-auth-link" to={portalPath}>Workspace</NavLink>
+            : <NavLink className="header-auth-link" to="/login">Client login</NavLink>}
           <Button className="header-cta" to="/contact" size="small">
             Let&apos;s talk <ArrowUpRight size={16} aria-hidden="true" />
           </Button>
@@ -64,6 +112,22 @@ function Navbar() {
         aria-label="Mobile navigation"
         hidden={!isMenuOpen}
       >
+        {signOutError && <p className="mobile-nav__error" role="alert">{signOutError}</p>}
+        {whatsappUrl && (
+          <a
+            className="mobile-nav__link mobile-nav__contact-link"
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <WhatsAppIcon size={18} /> Chat on WhatsApp
+          </a>
+        )}
+        {contactEmailUrl && (
+          <a className="mobile-nav__link mobile-nav__contact-link" href={contactEmailUrl}>
+            <Mail size={17} aria-hidden="true" /> Email us
+          </a>
+        )}
         {links.map((link) => (
           <NavLink
             key={link.to}
@@ -75,7 +139,21 @@ function Navbar() {
           </NavLink>
         ))}
         <NavLink className="mobile-nav__link" to="/contact" onClick={closeMenu}>Contact</NavLink>
-        <NavLink className="mobile-nav__link" to="/dashboard" onClick={closeMenu}>Client portal</NavLink>
+        {session
+          ? (
+            <>
+              <NavLink className="mobile-nav__link" to={portalPath} onClick={closeMenu}>Workspace</NavLink>
+              <button className="mobile-nav__link mobile-nav__signout" type="button" onClick={handleSignOut}>
+                <LogOut size={16} aria-hidden="true" /> Sign out
+              </button>
+            </>
+          )
+          : (
+            <>
+              <NavLink className="mobile-nav__link" to="/login" onClick={closeMenu}>Client sign in</NavLink>
+              <NavLink className="mobile-nav__link" to="/admin/login" onClick={closeMenu}>NPX team sign in</NavLink>
+            </>
+          )}
       </nav>
     </header>
   )
