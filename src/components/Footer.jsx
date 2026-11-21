@@ -16,6 +16,7 @@ function Footer() {
         </div>
         <div className="site-footer__links">
           <Link to="/services">Services</Link>
+          <Link to="/themes">Website themes</Link>
           <Link to="/work">Our work</Link>
           <Link to="/about">About</Link>
           <Link to="/contact">Contact</Link>

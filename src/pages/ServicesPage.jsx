@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'motion/react'
 import { ArrowRight, Check } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Card from '../components/Card.jsx'
+import Reveal from '../components/Reveal.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import { engagementOptions, services } from '../data/services.js'
 
@@ -10,7 +11,7 @@ function ServicesPage() {
 
   return (
     <>
-      <section className="inner-hero">
+      <Reveal as="section" className="inner-hero">
         <div className="container inner-hero__content">
           <p className="eyebrow"><span className="eyebrow__dot" /> Our services</p>
           <h1>Digital services,<br /><span>thoughtfully delivered.</span></h1>
@@ -20,9 +21,9 @@ function ServicesPage() {
           </p>
           <Link className="text-link" to="/contact">Talk through your project <ArrowRight size={16} /></Link>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section services-detail-section">
+      <Reveal as="section" className="section services-detail-section">
         <div className="container">
           <SectionHeading
             eyebrow="What we can build"
@@ -55,9 +56,55 @@ function ServicesPage() {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section pricing-section">
+      <Reveal as="section" className="section services-showcase-section" delay={0.02}>
+        <div className="container services-showcase-grid">
+          <div className="services-showcase-copy">
+            <p className="eyebrow">Designed for real devices</p>
+            <h2>One considered experience, <span>wherever it lives.</span></h2>
+            <p>
+              Good responsive design does more than shrink a desktop layout.
+              We shape content, hierarchy, and interactions to feel natural on
+              every screen size.
+            </p>
+            <ul>
+              <li><Check size={15} aria-hidden="true" />Flexible content and layout</li>
+              <li><Check size={15} aria-hidden="true" />Touch-friendly interactions</li>
+              <li><Check size={15} aria-hidden="true" />Readable visual hierarchy</li>
+            </ul>
+            <Link to="/contact">Discuss a responsive project <ArrowRight size={15} aria-hidden="true" /></Link>
+          </div>
+
+          <div className="services-showcase-art" aria-hidden="true">
+            <span className="services-showcase-art__glow" />
+            <div className="services-device services-device--desktop">
+              <div className="services-device__screen">
+                <div className="services-device__toolbar"><i /><i /><i /><span /></div>
+                <div className="services-device__canvas">
+                  <span className="services-device__kicker" />
+                  <span className="services-device__headline" />
+                  <span className="services-device__copy" />
+                  <span className="services-device__action" />
+                  <span className="services-device__panel" />
+                </div>
+              </div>
+              <span className="services-device__stand" />
+            </div>
+            <div className="services-device services-device--phone">
+              <div className="services-device__screen">
+                <span className="services-device__notch" />
+                <span className="services-device__phone-heading" />
+                <span className="services-device__phone-panel" />
+                <span className="services-device__phone-copy" />
+                <span className="services-device__phone-action" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal as="section" className="section pricing-section" delay={0.03}>
         <div className="container">
           <SectionHeading
             eyebrow="Pricing approach"
@@ -86,7 +133,7 @@ function ServicesPage() {
           </div>
           <p className="pricing-disclaimer">No fixed prices are shown because scope, content, and integrations vary by project.</p>
         </div>
-      </section>
+      </Reveal>
     </>
   )
 }

@@ -15,7 +15,9 @@ import {
 } from 'lucide-react'
 import Button from '../components/Button.jsx'
 import Card from '../components/Card.jsx'
+import FeaturedWebsiteThemes from '../components/FeaturedWebsiteThemes.jsx'
 import ProjectCard from '../components/ProjectCard.jsx'
+import Reveal from '../components/Reveal.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import { projects } from '../data/projects.js'
 import { services } from '../data/services.js'
@@ -161,7 +163,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section className="section home-intro-section">
+      <Reveal as="section" className="section home-intro-section">
         <div className="container home-intro-grid">
           <div className="home-intro-copy">
             <p className="eyebrow">A digital partner with purpose</p>
@@ -178,9 +180,9 @@ function HomePage() {
             </Button>
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section section--approach">
+      <Reveal as="section" className="section section--approach" delay={0.03}>
         <div className="container approach-grid">
           <div className="approach-intro">
             <p className="eyebrow">Why choose NPX</p>
@@ -208,9 +210,9 @@ function HomePage() {
             </div>
           </Card>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section process-section">
+      <Reveal as="section" className="section process-section" delay={0.03}>
         <div className="container">
           <SectionHeading
             eyebrow="Our working process"
@@ -231,9 +233,9 @@ function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section featured-work-section">
+      <Reveal as="section" className="section featured-work-section" delay={0.03}>
         <div className="container">
           <div className="featured-work-heading">
             <SectionHeading
@@ -251,9 +253,11 @@ function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section testimonials-section">
+      <FeaturedWebsiteThemes />
+
+      <Reveal as="section" className="section testimonials-section" delay={0.03}>
         <div className="container testimonials-grid">
           <div>
             <p className="eyebrow">Client feedback</p>
@@ -271,9 +275,9 @@ function HomePage() {
             </div>
           </Card>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="closing-section">
+      <Reveal as="section" className="closing-section" delay={0.03}>
         <div className="container closing-card">
           <div>
             <p className="eyebrow">Have a good one in mind?</p>
@@ -283,7 +287,7 @@ function HomePage() {
             Tell us about it <ArrowUpRight size={17} aria-hidden="true" />
           </Button>
         </div>
-      </section>
+      </Reveal>
     </>
   )
 }

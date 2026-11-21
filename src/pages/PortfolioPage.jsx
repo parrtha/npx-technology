@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import Reveal from '../components/Reveal.jsx'
 import ProjectCard from '../components/ProjectCard.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 import { projectCategories, projects } from '../data/projects.js'
@@ -16,7 +17,7 @@ function PortfolioPage() {
 
   return (
     <>
-      <section className="inner-hero inner-hero--portfolio">
+      <Reveal as="section" className="inner-hero inner-hero--portfolio">
         <div className="container inner-hero__content">
           <p className="eyebrow"><span className="eyebrow__dot" /> Selected concepts</p>
           <h1>Ideas, explored<br /><span>through digital.</span></h1>
@@ -25,9 +26,9 @@ function PortfolioPage() {
             They are illustrative work, not client projects or live products.
           </p>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section portfolio-section">
+      <Reveal as="section" className="section portfolio-section">
         <div className="container">
           <SectionHeading
             eyebrow="Concept gallery"
@@ -58,7 +59,7 @@ function PortfolioPage() {
             <Link to="/contact">Let&apos;s talk about it <ArrowUpRight size={15} aria-hidden="true" /></Link>
           </div>
         </div>
-      </section>
+      </Reveal>
     </>
   )
 }

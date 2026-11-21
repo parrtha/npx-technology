@@ -5,6 +5,7 @@ import {
   FolderKanban,
   LayoutDashboard,
   MessageSquareText,
+  Palette,
   Settings,
   Users,
 } from 'lucide-react'
@@ -20,6 +21,7 @@ const navigation = [
   { label: 'Messages', to: '/admin/messages', icon: MessageSquareText },
   { label: 'Payments', to: '/admin/payments', icon: CreditCard },
   { label: 'Notifications', to: '/admin/notifications', icon: Bell },
+  { label: 'Website themes', to: '/admin/themes', icon: Palette },
   { label: 'Settings', to: '/admin/settings', icon: Settings },
 ]
 

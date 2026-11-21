@@ -83,6 +83,11 @@
 .customer-stat {
   min-width: 0;
   padding: 17px;
+  box-shadow: var(--shadow-subtle);
+}
+
+.customer-stat:hover {
+  border-color: color-mix(in srgb, var(--npx-blue) 28%, var(--border));
 }
 
 .customer-stat__top {

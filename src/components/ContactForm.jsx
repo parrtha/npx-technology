@@ -1,12 +1,25 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import { services } from '../data/services.js'
 import Button from './Button.jsx'
 import Loading from './Loading.jsx'
 
-function ContactForm({ initialService = '', onSubmit }) {
+function ContactForm({
+  initialService = '',
+  initialThemeId = '',
+  themes = [],
+  themeCatalogStatus = 'idle',
+  onSubmit,
+}) {
   const [status, setStatus] = useState('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const themeSelectRef = useRef(null)
+
+  useEffect(() => {
+    if (initialThemeId && themeSelectRef.current?.value === '') {
+      themeSelectRef.current.value = initialThemeId
+    }
+  }, [initialThemeId])
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -66,6 +79,18 @@ function ContactForm({ initialService = '', onSubmit }) {
           />
         </label>
         <label className="form-field">
+          <span>Business name <span className="form-field__optional">(optional)</span></span>
+          <input name="business_name" autoComplete="organization" maxLength={160} />
+        </label>
+        <label className="form-field">
+          <span>Business category <span className="form-field__optional">(optional)</span></span>
+          <input
+            name="business_category"
+            maxLength={100}
+            placeholder="For example, healthcare or retail"
+          />
+        </label>
+        <label className="form-field">
           <span>Service <span aria-hidden="true">*</span></span>
           <select name="service" required defaultValue={initialService}>
             <option value="" disabled>Select a service</option>
@@ -73,6 +98,42 @@ function ContactForm({ initialService = '', onSubmit }) {
               <option key={service.title} value={service.title}>{service.title}</option>
             ))}
           </select>
+        </label>
+        <label className="form-field">
+          <span>Website type <span className="form-field__optional">(optional)</span></span>
+          <select name="website_type" defaultValue="">
+            <option value="">Not sure yet</option>
+            <option value="Business website">Business website</option>
+            <option value="E-commerce store">E-commerce store</option>
+            <option value="Landing page">Landing page</option>
+            <option value="Web application">Web application</option>
+            <option value="Website redesign">Website redesign</option>
+          </select>
+        </label>
+        <label className="form-field">
+          <span>Budget range <span className="form-field__optional">(optional)</span></span>
+          <select name="budget_range" defaultValue="">
+            <option value="">Prefer not to say</option>
+            <option value="Under $2,500">Under $2,500</option>
+            <option value="$2,500–$5,000">$2,500–$5,000</option>
+            <option value="$5,000–$10,000">$5,000–$10,000</option>
+            <option value="$10,000+">$10,000+</option>
+            <option value="To be discussed">To be discussed</option>
+          </select>
+        </label>
+        <label className="form-field form-field--wide">
+          <span>Website theme <span className="form-field__optional">(optional)</span></span>
+          <select ref={themeSelectRef} name="selected_theme_id" defaultValue={initialThemeId}>
+            <option value="">I&apos;d like to discuss a direction</option>
+            {themes.map((theme) => (
+              <option key={theme.id} value={theme.id}>{theme.name} — {theme.category}</option>
+            ))}
+          </select>
+          {themeCatalogStatus === 'error' && (
+            <span className="form-field__hint">
+              Themes are temporarily unavailable. You can still send an enquiry without selecting one.
+            </span>
+          )}
         </label>
         <label className="form-field form-field--wide">
           <span>Tell us a little about your project <span aria-hidden="true">*</span></span>
@@ -123,7 +184,9 @@ function ContactForm({ initialService = '', onSubmit }) {
       </div>
 
       <p className="contact-form__privacy">
-        This form is not connected to a backend yet. Your details are not transmitted or stored.
+        {onSubmit
+          ? 'The form sends allowed enquiry fields to Supabase. Database Row Level Security controls access when the required migrations are applied.'
+          : 'This form is not connected to a backend yet. Your details are not transmitted or stored.'}
       </p>
     </form>
   )

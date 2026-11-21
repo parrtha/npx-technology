@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowLeft, ChevronRight, LayoutDashboard, LogOut, Menu, X } from 'lucide-react'
+import { ArrowLeft, Bell, ChevronRight, LayoutDashboard, LogOut, Menu, X } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { classNames } from '../utils/classNames.js'
 import { useAuth } from '../hooks/useAuth.js'
@@ -126,6 +126,12 @@ function DashboardShell({
           <span className="brand__mark" aria-hidden="true">N</span>
           <span className="brand__wordmark">NPX <span>TECHNOLOGY</span></span>
         </NavLink>
+        {adminAccount && (
+          <div className="dashboard-brand__suite">
+            <span aria-hidden="true" />
+            Operations console
+          </div>
+        )}
         <div className="dashboard-sidebar__label">{title}</div>
         <nav className="dashboard-nav" aria-label={`${title} navigation`}>
           {navigation.map(({ label, to, icon: Icon }) => (
@@ -202,6 +208,17 @@ function DashboardShell({
             </div>
           ) : (
             <span className="dashboard-account-email">{user?.email}</span>
+          )}
+          {adminAccount && (
+            <NavLink
+              className="dashboard-notification-link"
+              to={`${basePath}/notifications`}
+              aria-label="View notifications"
+              title="View notifications"
+            >
+              <Bell size={18} aria-hidden="true" />
+              <span>Notifications</span>
+            </NavLink>
           )}
           {!showSidebarSignOut && (
             <button

@@ -22,11 +22,11 @@ import {
 import { getSupabaseClient, isSupabaseConfigured } from '../lib/supabase.js'
 
 const overviewMetrics = [
-  { label: 'Total enquiries', key: 'totalEnquiries', icon: FileText },
-  { label: 'Total customers', key: 'totalCustomers', icon: Users },
-  { label: 'Active projects', key: 'activeProjects', icon: BriefcaseBusiness },
-  { label: 'Completed projects', key: 'completedProjects', icon: CircleCheck },
-  { label: 'Pending payments', key: 'pendingPayments', icon: CreditCard },
+  { label: 'Total enquiries', key: 'totalEnquiries', icon: FileText, tone: 'blue' },
+  { label: 'Total customers', key: 'totalCustomers', icon: Users, tone: 'cyan' },
+  { label: 'Active projects', key: 'activeProjects', icon: BriefcaseBusiness, tone: 'violet' },
+  { label: 'Completed projects', key: 'completedProjects', icon: CircleCheck, tone: 'green' },
+  { label: 'Pending payments', key: 'pendingPayments', icon: CreditCard, tone: 'amber' },
 ]
 
 const enquiryStatuses = {
@@ -51,7 +51,13 @@ function formatDate(value) {
 function AdminPanelState({ icon: Icon, title, description, loading = false }) {
   return (
     <div className="admin-empty" role="status">
-      <span className="admin-empty__icon"><Icon size={20} aria-hidden="true" /></span>
+      <div className="admin-empty__illustration" aria-hidden="true">
+        <span className="admin-empty__orbit admin-empty__orbit--outer" />
+        <span className="admin-empty__orbit admin-empty__orbit--inner" />
+        <span className="admin-empty__node admin-empty__node--top" />
+        <span className="admin-empty__node admin-empty__node--side" />
+        <span className="admin-empty__glyph"><Icon size={21} /></span>
+      </div>
       <h3>{title}</h3>
       <p>{description}</p>
       {loading && <span className="sr-only">Loading</span>}
@@ -267,17 +273,24 @@ function AdminOverviewPage() {
       )}
 
       <section className="admin-metrics" aria-label="Business overview">
-        {overviewMetrics.map(({ label, key, icon: Icon }) => {
+        {overviewMetrics.map(({ label, key, icon: Icon, tone }) => {
           const value = isLoading ? '…' : overview?.[key]?.toLocaleString() ?? '—'
           return (
-            <Card className="admin-metric" key={label}>
+            <Card className={`admin-metric admin-metric--${tone}`} key={label}>
               <div className="admin-metric__top">
                 <span>{label}</span>
                 <span className="admin-metric__icon"><Icon size={18} aria-hidden="true" /></span>
               </div>
-              <p className="admin-metric__value" aria-label={`${label}: ${isLoading ? 'Loading' : value}`}>
+              <motion.p
+                key={isLoading ? 'loading' : value}
+                className="admin-metric__value"
+                aria-label={`${label}: ${isLoading ? 'Loading' : value}`}
+                initial={{ opacity: 0, y: reduceMotion ? 0 : 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: reduceMotion ? 0 : 0.24, ease: 'easeOut' }}
+              >
                 {isLoading ? <Skeleton className="admin-metric__skeleton" /> : value}
-              </p>
+              </motion.p>
               <p className="admin-metric__note">
                 {hasError ? 'Count unavailable' : isLoading ? 'Loading count…' : 'Current database count'}
               </p>
@@ -287,7 +300,7 @@ function AdminOverviewPage() {
       </section>
 
       <div className="admin-overview-panels">
-        <Card className="admin-panel">
+        <Card className="admin-panel admin-panel--enquiries">
           <div className="admin-panel__header">
             <div>
               <p className="admin-panel__eyebrow">Incoming work</p>
@@ -300,7 +313,7 @@ function AdminOverviewPage() {
           {renderEnquiries()}
         </Card>
 
-        <Card className="admin-panel">
+        <Card className="admin-panel admin-panel--activity">
           <div className="admin-panel__header">
             <div>
               <p className="admin-panel__eyebrow">Workspace timeline</p>

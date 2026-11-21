@@ -14,11 +14,14 @@ import PortfolioPage from '../pages/PortfolioPage.jsx'
 import PlaceholderPage from '../pages/PlaceholderPage.jsx'
 import ServicesPage from '../pages/ServicesPage.jsx'
 import WorkspacePage from '../pages/WorkspacePage.jsx'
+import WebsiteThemesPage from '../pages/WebsiteThemesPage.jsx'
 import RequireAuth from './RequireAuth.jsx'
 
 const AdminOverviewPage = lazy(() => import('../pages/AdminOverviewPage.jsx'))
 const AdminSectionPage = lazy(() => import('../pages/AdminSectionPage.jsx'))
 const AdminSettingsPage = lazy(() => import('../pages/AdminSettingsPage.jsx'))
+const AdminWebsiteThemesPage = lazy(() => import('../pages/AdminWebsiteThemesPage.jsx'))
+const CustomerEnquiriesPage = lazy(() => import('../pages/CustomerEnquiriesPage.jsx'))
 
 function AdminPage({ children }) {
   return (
@@ -34,6 +37,7 @@ function AppRoutes() {
       <Route element={<PublicLayout />}>
         <Route index element={<HomePage />} />
         <Route path="services" element={<ServicesPage />} />
+        <Route path="themes" element={<WebsiteThemesPage />} />
         <Route path="work" element={<PortfolioPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="contact" element={<ContactPage />} />
@@ -128,6 +132,14 @@ function AppRoutes() {
             </AdminPage>
           )}
         />
+        <Route
+          path="themes"
+          element={(
+            <AdminPage>
+              <AdminWebsiteThemesPage />
+            </AdminPage>
+          )}
+        />
       </Route>
 
       <Route
@@ -153,6 +165,14 @@ function AppRoutes() {
               actionLabel="Back to overview"
               note="Project data integration is pending. No project records are displayed or simulated."
             />
+          )}
+        />
+        <Route
+          path="enquiries"
+          element={(
+            <Suspense fallback={<Loading label="Loading enquiry history" />}>
+              <CustomerEnquiriesPage />
+            </Suspense>
           )}
         />
         <Route

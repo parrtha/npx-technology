@@ -17,12 +17,28 @@
 }
 
 .auth-card {
+  position: relative;
+  overflow: hidden;
   width: min(100%, 480px);
   padding: clamp(25px, 5vw, 43px);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   background: var(--surface-raised);
   box-shadow: var(--shadow-raised);
+  transition:
+    background-color var(--motion-base) ease,
+    border-color var(--motion-base) ease,
+    box-shadow var(--motion-base) ease;
+}
+
+.auth-card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: var(--gradient-brand);
+  content: "";
 }
 
 .auth-card--register {

@@ -4,6 +4,7 @@ import {
   Bell,
   CircleCheck,
   CreditCard,
+  FileText,
   FolderKanban,
   MessageCircle,
 } from 'lucide-react'
@@ -103,6 +104,9 @@ function CustomerDashboardPage() {
         <div className="customer-quick-actions__links">
           <Link className="button button--primary" to="/dashboard/projects">
             <FolderKanban size={17} aria-hidden="true" /> View Projects
+          </Link>
+          <Link className="button button--outline" to="/dashboard/enquiries">
+            <FileText size={17} aria-hidden="true" /> My Enquiries
           </Link>
           <Link className="button button--outline" to="/contact">
             <MessageCircle size={17} aria-hidden="true" /> Contact Support

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowUpRight, Mail, LogOut, Menu, X } from 'lucide-react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { classNames } from '../utils/classNames.js'
@@ -11,6 +11,7 @@ import WhatsAppIcon from './WhatsAppIcon.jsx'
 
 const links = [
   { to: '/services', label: 'Services' },
+  { to: '/themes', label: 'Website themes' },
   { to: '/work', label: 'Our work' },
   { to: '/about', label: 'About' },
 ]
@@ -18,6 +19,7 @@ const links = [
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [signOutError, setSignOutError] = useState('')
+  const menuButtonRef = useRef(null)
   const { session, profile, signOut } = useAuth()
   const navigate = useNavigate()
   const portalPath = profile?.role === 'admin' ? '/admin' : '/dashboard'
@@ -25,6 +27,22 @@ function Navbar() {
   function closeMenu() {
     setIsMenuOpen(false)
   }
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return undefined
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false)
+        menuButtonRef.current?.focus()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isMenuOpen])
 
   async function handleSignOut() {
     const { error } = await signOut()
@@ -92,6 +110,7 @@ function Navbar() {
             Let&apos;s talk <ArrowUpRight size={16} aria-hidden="true" />
           </Button>
           <button
+            ref={menuButtonRef}
             className="mobile-menu-toggle"
             type="button"
             onClick={() => setIsMenuOpen((open) => !open)}
@@ -110,7 +129,8 @@ function Navbar() {
         className={classNames('mobile-nav', isMenuOpen && 'mobile-nav--open')}
         id="mobile-navigation"
         aria-label="Mobile navigation"
-        hidden={!isMenuOpen}
+        aria-hidden={!isMenuOpen}
+        inert={!isMenuOpen}
       >
         {signOutError && <p className="mobile-nav__error" role="alert">{signOutError}</p>}
         {whatsappUrl && (

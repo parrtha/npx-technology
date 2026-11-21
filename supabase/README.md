@@ -12,7 +12,11 @@ messages, payments, notifications, and activity logs tables, together with
 their relationships, indexes, policies, and signup profile trigger. It does
 not insert sample records. The notification guard migration
 [`migrations/20261121003000_rbac_notification_guard.sql`](./migrations/20261121003000_rbac_notification_guard.sql)
-is applied after all three earlier migrations.
+is applied after all three earlier migrations. The website-theme catalog,
+enquiry theme snapshots, and private preview-image bucket are added by
+[`migrations/20261121004000_website_themes.sql`](./migrations/20261121004000_website_themes.sql).
+That migration inserts only the six requested design-catalog entries; it does
+not create customer, enquiry, project, payment, or activity records.
 
 ## Apply the migration manually
 
@@ -23,11 +27,17 @@ is applied after all three earlier migrations.
    order.
 2. In the Supabase Dashboard for the intended project, open **SQL Editor** and
    create a new query.
-3. Paste and run the base schema migration first, followed by each RBAC and
-   notification-guard migration in filename order, each as a separate query.
+3. Paste and run the base schema migration first, followed by each RBAC,
+   notification-guard, and website-themes migration in filename order, each as
+   a separate query.
    The migration is not run by the application, build, or lint commands.
-4. Verify the nine tables have RLS enabled and inspect the policies in
-   **Database → Tables**.
+4. Verify the nine original tables and `website_themes` have RLS enabled,
+   inspect the policies in **Database → Tables**, and confirm the
+   `npx-website-theme-previews` bucket is private with its file-size and MIME
+   restrictions. In **Storage → Policies**, verify that admins alone can
+   upload, replace, and delete previews, while public reads are limited to
+   published-theme paths and customers can read only paths saved on their own
+   enquiries.
 5. After a trusted user has signed up, promote the first admin from the SQL
    Editor by replacing the UUID with that user's `auth.users.id`:
 
@@ -62,6 +72,19 @@ Supabase uses a shared `authenticated` database role, so the role-change RPC
 has an `EXECUTE` grant for that role. Its security-definer body checks the
 caller's database-backed admin profile and rejects non-admins and self-role
 changes; frontend role checks are not the enforcement layer.
+
+Website themes are readable by anonymous and authenticated users only while
+published. Theme mutations and preview-image uploads, replacements, and
+deletions are restricted to database-verified admins. The preview bucket is
+private: published previews can be downloaded publicly through its read
+policy, while an authenticated customer can continue to read a preview path
+snapshotted on their own enquiry after the theme is unpublished. Enquiry theme
+names, categories, palettes, and image paths are captured by a database
+trigger; the client cannot write those historical snapshot fields. Anonymous
+enquiry inserts are limited to public contact fields and a published theme
+reference; anonymous users cannot read enquiry records. Deleting a theme sets
+the live enquiry reference to null while preserving its saved historical
+theme information.
 
 ## Auth configuration
 

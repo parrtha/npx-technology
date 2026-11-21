@@ -1,6 +1,7 @@
 import {
   Bell,
   CreditCard,
+  FileText,
   FolderKanban,
   LayoutDashboard,
   MessageSquareText,
@@ -13,6 +14,7 @@ import '../styles/customer-dashboard.css'
 const navigation = [
   { label: 'Overview', to: '/dashboard', icon: LayoutDashboard },
   { label: 'My Projects', to: '/dashboard/projects', icon: FolderKanban },
+  { label: 'My enquiries', to: '/dashboard/enquiries', icon: FileText },
   { label: 'Messages', to: '/dashboard/messages', icon: MessageSquareText },
   { label: 'Payments', to: '/dashboard/payments', icon: CreditCard },
   { label: 'Notifications', to: '/dashboard/notifications', icon: Bell },

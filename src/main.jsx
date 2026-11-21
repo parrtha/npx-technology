@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import './styles/globals.css'
 import App from './App.jsx'
+import './styles/neon-tropical.css'
+import './styles/website-themes.css'
 import ThemeProvider from './context/ThemeProvider.jsx'
 
 createRoot(document.getElementById('root')).render(

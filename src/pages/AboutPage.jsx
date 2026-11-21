@@ -1,6 +1,7 @@
 import { ArrowUpRight, Compass, HeartHandshake, Lightbulb, ShieldCheck, Target } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Card from '../components/Card.jsx'
+import Reveal from '../components/Reveal.jsx'
 import SectionHeading from '../components/SectionHeading.jsx'
 
 const values = [
@@ -40,7 +41,7 @@ const approachSteps = [
 function AboutPage() {
   return (
     <>
-      <section className="inner-hero inner-hero--about">
+      <Reveal as="section" className="inner-hero inner-hero--about">
         <div className="container inner-hero__content">
           <p className="eyebrow"><span className="eyebrow__dot" /> About NPX</p>
           <h1>Small enough to care.<br /><span>Built to think big.</span></h1>
@@ -49,9 +50,9 @@ function AboutPage() {
             design and dependable engineering to ambitious ideas.
           </p>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section about-purpose-section">
+      <Reveal as="section" className="section about-purpose-section">
         <div className="container purpose-grid">
           <Card className="purpose-card">
             <span className="purpose-card__icon"><Target size={20} aria-hidden="true" /></span>
@@ -66,9 +67,9 @@ function AboutPage() {
             <p>We want teams of every size to have access to digital work that is useful, dependable, and made with care.</p>
           </Card>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section about-goals-section">
+      <Reveal as="section" className="section about-goals-section" delay={0.03}>
         <div className="container goals-grid">
           <div>
             <SectionHeading
@@ -83,9 +84,9 @@ function AboutPage() {
             <div><span>03</span><p>Leave teams with a digital foundation they can understand and grow.</p></div>
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section about-approach-section">
+      <Reveal as="section" className="section about-approach-section" delay={0.03}>
         <div className="container">
           <SectionHeading
             eyebrow="Our working approach"
@@ -102,9 +103,9 @@ function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section founder-section">
+      <Reveal as="section" className="section founder-section" delay={0.03}>
         <div className="container">
           <SectionHeading
             eyebrow="The people behind NPX"
@@ -128,9 +129,9 @@ function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="section values-section">
+      <Reveal as="section" className="section values-section" delay={0.03}>
         <div className="container">
           <SectionHeading
             eyebrow="What guides us"
@@ -147,9 +148,9 @@ function AboutPage() {
             ))}
           </div>
         </div>
-      </section>
+      </Reveal>
 
-      <section className="about-cta">
+      <Reveal as="section" className="about-cta" delay={0.03}>
         <div className="container about-cta__inner">
           <div>
             <p className="eyebrow">A good place to start</p>
@@ -157,7 +158,7 @@ function AboutPage() {
           </div>
           <Link className="button button--light" to="/contact">Talk to the team <ArrowUpRight size={16} /></Link>
         </div>
-      </section>
+      </Reveal>
     </>
   )
 }
